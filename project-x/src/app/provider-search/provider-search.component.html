@@ -1,0 +1,170 @@
+<div class="overlay top-left col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="row text-center">
+		<h5 class="title-bg padding-top-10 padding-bottom-10 margin-0 text-white">POC - {{ title }}</h5>
+	</div>
+	
+	<div class="row text-center col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<md-select id="profileSelect" [ngModel]="profile">
+		<md-option ng-value="A">Saved Search 1</md-option>
+			<md-option ng-value="Y">Saved Search 2</md-option>
+			<md-option ng-value="Z">Saved Search 3</md-option>
+	</md-select>
+
+
+<!--<md-input-container>-->
+	<!--<select id="profileSelect" ng-Model="profile" ng-options="prof.name for prof in profile">
+		<option ng-value=" ">{{prof.name}}</option>-->
+			<!--<option ng-value="Y">Saved Search 2</option>-->
+			<!--<option ng-value="Z">Saved Search 3</option>-->
+	<!--</select>-->
+<!--</md-input-container>-->
+
+
+	<!--</md-input-container>-->
+
+	<button md-raised-button class="md-accent md-raised" (click)="saveSearch(profile.key)">
+		<i class="material-icons">library_add</i>
+	</button>
+	<p> {{profile.key}}</p>
+</div>
+
+</div>
+
+<div class="overlay top-right margin-20">
+	<br />
+	<div class="row text-center" *ngIf="!streetViewEnabled">
+		<button md-raised-button width="Auto" color="primary" class="text-center"  (click)="switchToStreetView($event)">
+			<img src="https://img.buzzfeed.com/buzzfeed-static/static/enhanced/webdr06/2013/4/11/1/enhanced-buzz-24965-1365659349-6.jpg" style="width:3em; height:3em;"/>
+			</button>
+	</div>
+	<div class="row text-center" width="Auto" *ngIf="streetViewEnabled">
+		<button md-raised-button color="primary" class="text-center" (click)="switchToMapView($event)">
+			<img src="https://cdn4.iconfinder.com/data/icons/flatified/512/map.png" style="width:3em; height:3em;"/>
+			</button>
+	</div>
+	<br />
+</div>
+
+<div class="overlay top-left border-box margin-top-50 col-xs-5 col-sm-4 col-md-3 col-lg-3">
+	<form id="SearchForm">
+
+		<md-input-container>
+			<input placeholder="Search Providers" mdInput type="text" [mdAutocomplete]="auto" [formControl]="searchControl">
+		</md-input-container>
+
+		<md-autocomplete #auto="mdAutocomplete" [displayWith]="displayFn" (change)="selectedItemChange">
+			<md-option *ngFor="let provider of filteredProviders | async" [value]="provider">
+				{{ provider.name }}
+			</md-option>
+		</md-autocomplete>
+	</form>
+
+</div>
+
+
+<div class="overlay top-left col-xs-5 col-sm-4 col-md-3 col-lg-3">
+
+<!--<md-input-container>-->
+  
+</div>
+
+
+
+
+<!-- Do not turn on streetViewControl messes everything. Probably bug in ng2map implementation -->
+<ngui-map
+	#nguiMap
+	id="nguiMap"
+	zoom="{{zoom}}"
+	center="{{lat}}, {{lng}}"
+	[mapTypeControl]="'false'"
+	[streetViewControl]="'false'"
+	(mapReady$)="onMapReady($event)"
+	(mapClick)="onMapClick($event)"
+	(click)="onClickDummy($event, 'Map')"
+	(idle)="onMapIdle($event)">
+
+    <marker *ngFor="let provider of providers"
+		[position]="[provider.lat, provider.lng]"
+		(initialized$)="onMarkerInit($event, provider.id)"
+		(click)="markerClicked($event, provider.id)" [animation]="'DROP'"
+		[label]=""
+		visible={{!streetViewEnabled}}>
+	</marker>
+
+	<marker *ngFor="let provider of providers"
+		[position]="[provider.lat, provider.lng]"
+		(initialized$)="onMarkerInit_street($event, provider.id)"
+		(click)="markerClicked($event, provider.id)" [animation]="'BOUNCE'"
+		[label]=""
+		visible={{streetViewEnabled}}>
+	</marker>
+
+	<!--<marker *ngFor="let provider of providers"
+	[position]="[provider.lat1, provider.lng1]"	
+	[label]="X"
+	visible={{enableBenefits}}>
+	</marker>-->
+
+	<!--<directions-renderer
+      [suppressMarkers]="true"
+      [draggable]="true"      
+      (directions_changed)="directionsChanged()"
+      [directions-request]="direction">
+    </directions-renderer>-->
+
+
+	<info-window id="infoWindow">
+		
+      <!--[[name]]<br />[[desc]]-->
+	  <h3> [[name]] </h3><br /> <button id="PDetails" class="link"><p>Click Here for further Details</p></button>
+	  <!--<button onclick="openProviderDetails()"></button>-->
+	  
+    </info-window>
+
+
+
+</ngui-map>
+		
+		<div id="legend" class="overlay border-box margin-top-50 col-xs-5 col-sm-2 col-md-3 col-lg-3">
+		<h3>Legend</h3>
+		</div>
+
+
+<!--<div id="panel" *ngIf="selectedProvider && providerDetailsVisible && benefitDetailsTime" class="col-xs-12 col-sm-12 col-md-5 col-lg-4 overlay bottom-left provider-details shadow">-->
+<div id="panel" *ngIf="benefitDetailsTime" class="col-xs-12 col-sm-12 col-md-5 col-lg-4 overlay bottom-left provider-details shadow">	
+	<div class="row">
+		<div class="provider-details-heading col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<h5 class="margin-sides-5 text-left">Nearest provider: {{selectedProvider.name}}</h5>
+			<div class="margin-sides-5 text-right details-close-button"><button md-mini-fab (click)="closeProviderDetails()" class="bg-transparent"><md-icon>close</md-icon></button></div>
+		</div>
+		<div class="provider-details-desc details-overflow-scroll col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<!--div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-10">{{selectedProvider.desc}}</div-->
+			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+				<p class="margin-0 margin-top-10 padding-0 sub-heading-color"><b>Services Offered:</b></p>
+				<ul class="list-group col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+					<li *ngFor="let service of selectedProvider.services"  class="list-group-item">{{service.name}}</li>
+				</ul>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 margin-top-0">
+				<p class="margin-0 margin-top-10 padding-0 sub-heading-color"><b>Promotions:</b></p>
+				<ul class="list-group col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+					<li *ngFor="let promo of selectedProvider.promotions"  class="list-group-item">{{promo.name}}</li>
+				</ul>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 margin-top-0">
+				<p class="margin-0 margin-top-10 padding-0 sub-heading-color"><b>Opening Hours:</b></p>
+				<ul class="list-group col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+					<li class="list-group-item">Monday - {{selectedProvider.openingHours.Mon}}</li>
+					<li class="list-group-item">Tuesday - {{selectedProvider.openingHours.Tue}}</li>
+					<li class="list-group-item">Wednesday - {{selectedProvider.openingHours.Wed}}</li>
+					<li class="list-group-item">Thursday - {{selectedProvider.openingHours.Thu}}</li>
+					<li class="list-group-item">Friday - {{selectedProvider.openingHours.Fri}}</li>
+					<li class="list-group-item">Saturday - {{selectedProvider.openingHours.Sat}}</li>
+					<li class="list-group-item">Sunday - {{selectedProvider.openingHours.Sun}}</li>
+				</ul>
+			</div>
+			<span class="margin-top-10">&nbsp;</span>
+		</div>
+	</div>
+</div>
