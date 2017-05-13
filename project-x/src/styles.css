@@ -1,0 +1,67 @@
+/* You can add global styles to this file, and also import other style files */
+.text-black {color: #000;}
+.text-white {color: #fff;}
+.text-thin {font-weight: 200;}
+.text-thick {font-weight: 400;}
+.text-darkgrey {color: darkgrey;}
+.text-bold {font-weight: bold;}
+
+.menulink {
+    text-decoration:none;
+    color: #000;
+}
+
+.action-icon-color {color: #6A2875;}
+
+.btn {
+    background: #D7DBEA;
+    color: #6A2875;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+}
+input[type=text], input[type=url], input[type=number], input[type=email], input[type=password], input[type=tel], input[type=search], input[type=date], .input-group-addon, select {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+}
+button.disabled {
+    background: #808080;
+    color: #333 !important;
+}
+
+.bg-headline {background: #D7DBEA;}
+.bg-transparent {background: transparent;}
+.bg-white {background: #fff;}
+.bg-menu-button {background: #3f51b5}
+.bg-row-stripe {background-color: #eee;}
+.bg-grey {background-color: grey;}
+
+.menu-title-bg {background: #6A2975;}
+.menu-toolbar-bg {background: #5660AB;}
+
+.margin-0 {margin: 0;}.margin-5{margin: 5px;}.margin-10 {margin: 10px;}.margin-20 {margin: 20px;}
+.margin-top-0 {margin-top: 0;}.margin-top-10 {margin-top: 10px;}.margin-top-15 {margin-top: 15px;}.margin-top-20 {margin-top: 20px;}.margin-top-30 {margin-top: 30px;}
+.margin-bottom-0 {margin-bottom: 0;} .margin-bottom-5{margin-bottom:5px;}.margin-bottom-10 {margin-bottom: 10px;}.margin-bottom-20 {margin-bottom: 20px;}.margin-bottom-30 {margin-bottom: 30px;}.margin-bottom-40 {margin-bottom: 40px;}
+.margin-sides-5 {margin-left:5px;margin-right:5px;}
+.margin-right-10 {margin-right:10px;}
+
+.padding-0 {padding: 0;}.padding-10 {padding: 10px;}.padding-20 {padding: 20px;}
+.padding-top-5 {padding-top:5px;}.padding-top-10 {padding-top:10px;}.padding-top-20 {padding-top:20px;}.padding-top-30 {padding-top:30px;}
+.padding-bottom-5 {padding-bottom:5px;}.padding-bottom-10 {padding-bottom:10px;}.padding-bottom-20 {padding-bottom:20px;}.padding-bottom-30 {padding-bottom:30px;}
+.padding-left-5 {padding-left:5px;}
+.padding-sides-5 {padding-left:5px;padding-right:5px;}
+
+.border-bottom-1-grey {border-bottom: 1px solid grey;}
+
+table {background-color: white; color: black;}
+.table-striped>tbody>tr:nth-of-type(odd) {background-color: #eee;}
+.table-hover>tbody>tr:hover {background-color: #D7DBEA; color: #000; font-weight: bold;}
+
+.list-header {padding-top:10px; padding-bottom:10px; background-color: #ccc; font-weight: bold;}
+.list-items > div {padding-top:11px; padding-bottom:11px; padding-left:10px; padding-right:10px; color: #000;}
+.list-items > div:nth-of-type(odd) {background-color: #fff;}
+.list-items > div:nth-of-type(even) {background-color: #eee;}
+
+.header-row {padding-top:5px; padding-bottom:5px; padding-left:10px; padding-right:10px; background-color: #ccc; font-weight: 400;}
+.item-row {padding-top:11px; padding-bottom:11px; padding-left:10px; padding-right:10px; color: #000;}
+.selected-row {background-color: lightblue; color:#000;}
+
+ul > li:nth-of-type(odd) {background-color: #fff;}
+ul > li:nth-of-type(even) {background-color: #eee;}
